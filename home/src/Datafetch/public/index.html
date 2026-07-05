@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >Register Data Table</title>
+    <style>
+        body{
+            background-color: bisque;
+        }
+        h1{
+            font-size: 70px;
+            color: brown;
+            font-family:cursive;
+        }
+        table {
+            width: 70%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            margin-top: 70px;
+            text-align: left;
+            background-color: white;
+        }
+        table, th, td {
+            border: 1px solid black;
+            padding: 10px;
+            font-size: 35px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-size: 35px;
+            color: red;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Registered Customer</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody id="registerTableBody">
+            <!-- Data will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to fetch data from MongoDB and display it in the table
+        async function fetchRegisters() {
+            try {
+                const response = await fetch('/fetch-registers'); // Fetch data from the server
+                const registers = await response.json(); // Parse the JSON response
+                const tableBody = document.getElementById('registerTableBody');
+                
+                // Insert each register data into the table
+                registers.forEach(register => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${register.name}</td>
+                        <td>${register.email}</td>
+                        <td>${new Date(register.createdAt).toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching register data:', error);
+            }
+        }
+
+        // Fetch data when the page loads
+        window.onload = fetchRegisters;
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+ h1{
+  text-align: center;
+  color: rgb(138, 95, 29);
+}
+
+.checkout{
+  border-radius: 10px;
+  border: 0px;
+  background-color: rgb(190, 125, 27);
+  height: 40px;
+  width: 150px;
+  font-size: 18px;
+
+}
+
+.showbill{
+border-radius: 10px;
+  border: 0px;
+  background-color: rgb(190, 125, 27);
+  height: 40px;
+  width: 150px;
+  font-size: 18px;
+  color: black;
+  font-weight: bold;
+  margin-left: 650px;
+}
+
+.itemname{
+  font-size: 30px;
+  /* color: rgb(152, 38, 38); */
+  color:blue;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+  margin-left: 40px;
+}
+.qtysub{
+  border: 0;
+  border-radius: 8px;
+  color: black;
+  background-color: rgb(180, 233, 240);
+  width: 50px;
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 80px;
+  margin-left: -70px;
+}
+
+/*---------------Add Button--------------*/
+.qtyadd{
+  border: 0;
+  border-radius: 8px;
+  color: black;
+  background-color: rgb(180, 233, 240);
+  width: 50px;
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 80px;
+}
+
+p{
+    font-size: 30px;
+}
+.chk{
+  background-color: mediumturquoise;
+  width: 150px;
+  margin-left: 850px;
+  border-radius: 10px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 5px solid #111111;
+    padding: 8px;
+    text-align: right;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  
+  th {
+    background-color:rgb(233, 201, 201);
+    font-size: 30px;
+  }
+  
+  tfoot tr {
+    font-weight: bold;
+    font-size: 25px;
+  } 
+
+  .input1, div.submenu {
+    display: none;
+  }
+  
+  /*position the label*/
+  #label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 4px;
+  }
+  
+  /*show the submenu when input is checked*/
+  .input1:checked~div.submenu {
+    display: block;
+  }
+  

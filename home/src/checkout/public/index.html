@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup Form</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <style>
+        label{
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .custinfo{
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .custtab{
+            font-size: 20px;
+            font-weight: bold;
+            font-family:'Times New Roman', Times, serif;
+            text-align: left;
+            align-items: left;
+        }
+        .custin{
+            height: 50px;
+            font-size: 20px;
+            width: 350px;
+            border-radius: 5px;
+        }
+        .custtxt{
+            height: 70px;
+            font-size: 18px;
+            width: 350px;
+            border-radius: 5px;
+        }
+        .paylbl{
+            height: 50px;
+            font-size: 20px;
+            width: 350px;
+            border-radius: 5px;
+        }
+        .btnsubchk{
+            border-radius: 5px;
+            border: 0px;
+            background-color: rgb(170, 127, 74);
+            height: 60px;
+            width: 250px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="text-align: center;">
+    
+    <div>
+        <p style="color:rgb(155, 89, 10);text-align:center;font-size: 70px;font-weight: bold;">Checkout</p>
+    </div>
+
+        <div>   
+            <h1 style="color:black;font-size: 45px;font-weight: bold;text-align:left;">Customer Information</h1>
+        </div>
+        <br/><br/>
+        <div class='custtab'></div>
+                <form action="/checkout" method="post">
+                <table>
+                    <tr>
+                        <td><label>Enter Name :</label></td>
+                        <td><input type="text" name="name" id="name" placeholder="Name" class="custin" required></input><br/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><label>Enter Address : </label></td>
+                        <td><textarea cols={40} rows={7} name="adrress" id="address" class="custtxt">
+                        </textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td><label>Enter Pincode : </label></td>
+                        <td><input type='text' name="pincode"id="pincode" placeholder='pincode' class="custin"></input><td>
+                    </tr>
+
+                    <tr>
+                        <td><label>Enter City : </label></td>
+                        <td><input type='text' name="city" id="city" placeholder='city' class="custin" required></input></td>
+                    </tr>
+
+                    <tr>
+                        <td><label>Enter Phone No : </label></td>
+                        <td><input type='text' name="phone" id="phone" placeholder='Mobile' class="custin" required></input></td>
+                    </tr>
+                
+                    <tr>
+                        <td><label >Select Payment Mode : </label> </td>
+                        <td><select class="paylbl"  required>
+                        <option>Payment</option>
+                        <option>UPI</option>
+                        <option>Cash ON Delivery</option>
+                        <option>Credit Card</option>
+                        </select></p></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Place Order" class='btnsubchk' onClick={con}></input></td>
+                    </tr>
+                    </table>
+                </form>
+                <br/><br/>
+            </div>
+</body>
+</html>
