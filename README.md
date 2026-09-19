@@ -124,4 +124,4 @@ For instant evaluation and viva demonstration, pre-configured accounts are provi
 
 ---
 
-**Developed with ❤️ for MCA Project Examination & Demonstration.**
+**Developed By Aqsa ❤️**
