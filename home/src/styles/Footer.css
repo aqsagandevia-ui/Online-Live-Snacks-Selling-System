@@ -1,65 +1,177 @@
-.footer{
-    display: flex;
+/* Footer.css - Modern Food App Footer Styles */
+
+.crunchy-footer-root {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+.footer-main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+/* Brand Col */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.footer-logo img {
+  height: 48px;
+  object-fit: contain;
+}
+
+.footer-brand-text h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.footer-brand-text span {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-about-summary {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.social-icon-btn:hover {
+  transform: translateY(-2px);
+  background: var(--accent-primary);
+}
+
+.social-icon-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* Links Cols */
+.footer-links-col h4,
+.footer-info-col h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.footer-links-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links-col ul li a {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.15s ease, transform 0.15s ease;
+  display: inline-block;
+}
+.footer-links-col ul li a:hover {
+  color: var(--accent-primary);
+  transform: translateX(3px);
+}
+
+.footer-info-col p {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.footer-info-col p strong {
+  color: #e2e8f0;
+}
+
+.footer-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Bottom Bar */
+.footer-bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.footer-meta-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-meta-links a {
+  color: #94a3b8;
+  text-decoration: none;
+}
+.footer-meta-links a:hover {
+  color: var(--accent-primary);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .footer-bottom-bar {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-    background: lavender;
-}
-.footer-logo{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding-top: 20px;
-}
-.footer-logo p{
-    color:darkblue;
-    font-family:Garamond;
-    font-size: 46px;
-    font-weight: 700;
-}
-.footer-links{
-    display: flex;
-    list-style: none;
-    gap: 50px;
-    color: #252525;
-    font-size: 20px;
-}
-.footer-links li{
-    list-style: none;
-    font-size: 30px;
-    font-weight: 500;
-    
-}
-.footer-links li a{
-    text-decoration: none;
-    font-family: forte;
-    font-size: 35px;
-}
-.footer-social-icon{
-    display: flex;
-    gap: 20px;
-}
-.footer-icons-container{
-    padding: 10px;
-    padding-bottom: 6px;
-    background: #fbfbfb;
-    border: 1px solid #ebebeb;
-}
-.footer-copyright{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    width: 100%;
-    margin-bottom: 30px;
-    color: #1a1a1a;
-    font-size: 20px;
-}
-.footer-copyright hr{
-    width: 80%;
-    border: none;
-    border-radius: 10px;
-    height: 3px;
-    background: #c7c7c7;
+    text-align: center;
+  }
 }

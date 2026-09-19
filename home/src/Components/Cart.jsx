@@ -1,165 +1,281 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import '../styles/Cart.css'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import { IconTrash, IconTag, IconCheck } from './Icons';
+import '../styles/Cart.css';
 
-export default function Cart({ cart, cartIndex }) {
+const Cart = () => {
+    const {
+        cart,
+        subtotal,
+        discountAmount,
+        deliveryFee,
+        tax,
+        total,
+        appliedCoupon,
+        updateQuantity,
+        removeFromCart,
+        clearCart,
+        applyCoupon,
+        removeCoupon
+    } = useCart();
 
-    // const [removeItem]  = useState([])
-    const [cart2, setcart2] = useState([])
+    const navigate = useNavigate();
+    const [couponCodeInput, setCouponCodeInput] = useState('');
+    const [couponLoading, setCouponLoading] = useState(false);
 
+    const handleApplyCoupon = async (e) => {
+        e.preventDefault();
+        if (!couponCodeInput.trim()) return;
+        setCouponLoading(true);
+        await applyCoupon(couponCodeInput);
+        setCouponLoading(false);
+    };
 
-    useEffect(() => {
-        setcart2(cart)
-    }, { cart })
+    const suggestedCoupons = [
+        { code: 'SAVE10', desc: '10% OFF on orders ₹199+' },
+        { code: 'CRUNCHY20', desc: '20% OFF on orders ₹499+' },
+        { code: 'SNACK50', desc: 'Flat ₹50 OFF on orders ₹299+' }
+    ];
 
-    const handleRemove = (id) => {
-        const arr = cart2.filter((Item) => Item.id !== id);
-        setcart2(arr);
-        <p>Cart is empty</p>
-        // handlePrice();
+    if (cart.length === 0) {
+        return (
+            <div className="empty-cart-page">
+                <div className="empty-cart-card">
+                    <div className="empty-cart-icon">🛒</div>
+                    <h2>Your Cart is Empty</h2>
+                    <p>Looks like you haven't added any crunchy snacks to your cart yet.</p>
+                    <Link to="/product" className="btn-primary-custom start-shopping-btn">
+                        Explore Delicious Snacks
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
-    const calculateTotal = (cart2) => {
-        return cart.reduce((total, item) => total + (item.quantity * item.price), 0).toFixed(2);
-      };
-    
-
-    // const removeItem = (product) => {
-    //     setcart2(cart2 => cart2.filter(item => item.id !== product.id));
-    // }
-
-    // const removeItem = (product) => {
-    //     setcart2( _cart2 => _cart2.filter(item => item.id !== product.id));
-    //   };
-
     return (
-        <>
-            <br /><br /><br /><br /><br /><br />
-            <div>
-                <h1 style={{ textAlign: "center", fontFamily: " Arial Narrow Bold", fontWeight: "bold" , marginTop:"-160px"}}>Your Cart</h1>
-                {
-                    cart2.length === 0 ? (
-                         <p style={{ fontSize: "30px" }}>Your cart is empty</p>
-                        // <img style={{marginLeft:"20%"}} src={require("./photos/profile.png")} />
-                    ) :
-                        cart2?.map((cartItem, cartIndex) =>
-                        {
-                            return (
-                                <div><br /><br />
-                                    <div className='row card2'>
-                                        <div className='col-8'>
-                                            <img style={{ marginLeft: "-40px" }} src={cartItem.url} width="35%" />
-                                            <span className='itemname' >{cartItem.name} </span>
+        <div className="cart-page-wrapper">
+            <div className="cart-page-container">
+                <div className="cart-header">
+                    <h1>Your Shopping Cart</h1>
+                    <span className="cart-items-count">({cart.length} unique snack{cart.length > 1 ? 's' : ''})</span>
+                </div>
+
+                <div className="cart-layout-grid">
+                    {/* Left: Cart Items List */}
+                    <div className="cart-items-section">
+                        <div className="cart-table-header">
+                            <span>Snack Item</span>
+                            <span>Unit Price</span>
+                            <span>Quantity</span>
+                            <span>Subtotal</span>
+                            <span>Action</span>
+                        </div>
+
+                        <div className="cart-items-list">
+                            {cart.map((item) => {
+                                const itemId = item._id || item.id || item.name;
+                                const itemTotal = Number(item.price) * Number(item.quantity);
+                                const itemImg = item.image || item.url || '/photo/products1.webp';
+
+                                return (
+                                    <div key={itemId} className="cart-item-row animate-fade-in">
+                                        {/* Product Details */}
+                                        <div className="cart-item-info">
+                                            <img
+                                                src={itemImg}
+                                                alt={item.name}
+                                                onError={(e) => { e.target.src = '/photo/products1.webp'; }}
+                                                className="cart-item-thumb"
+                                            />
+                                            <div>
+                                                <h4 className="cart-item-name">{item.name}</h4>
+                                                <span className="cart-item-category">{item.category}</span>
+                                            </div>
                                         </div>
 
-                                        <div className='col-4'>
-                                            <button style={{ marginTop: "0" }} className='qtysub' onClick={() => {
-                                                const _cart2 = cart2.map((item, index) => {
-                                                    return cartIndex === index ? { ...item, quantity: item.quantity > 0 ? item.quantity - 1 : 0, } : item
-                                                })
-                                                setcart2(_cart2)
-                                            }}> - </button>
+                                        {/* Unit Price */}
+                                        <div className="cart-item-price">
+                                            ₹{item.price}
+                                        </div>
 
-                                            <span style={{ fontSize: "20px", fontWeight: "bold", fontFamily: "serif", marginLeft: "15px", marginRight: "15px" }}>{cartItem.quantity} </span>
+                                        {/* Quantity Stepper */}
+                                        <div className="cart-qty-stepper">
+                                            <button
+                                                onClick={() => updateQuantity(itemId, item.quantity - 1)}
+                                                className="qty-btn"
+                                                aria-label="Decrease quantity"
+                                            >
+                                                -
+                                            </button>
+                                            <span className="qty-value">{item.quantity}</span>
+                                            <button
+                                                onClick={() => updateQuantity(itemId, item.quantity + 1)}
+                                                disabled={item.quantity >= (item.stock || 99)}
+                                                className="qty-btn"
+                                                aria-label="Increase quantity"
+                                            >
+                                                +
+                                            </button>
+                                        </div>
 
-                                            <button className='qtyadd' onClick={() => {
-                                                const _cart2 = cart2.map((item, index) => {
-                                                    return cartIndex === index ? { ...item, quantity: item.quantity + 1 } : item
-                                                })
-                                                setcart2(_cart2)
-                                            }}> + </button>
-                                            <span style={{ fontSize: "20px", fontWeight: "bold", fontFamily: "serif", marginLeft: "20px" }}> &#8377;{cartItem.price * cartItem.quantity} </span>
+                                        {/* Row Subtotal */}
+                                        <div className="cart-item-subtotal">
+                                            ₹{itemTotal.toFixed(0)}
+                                        </div>
+
+                                        {/* Remove Action */}
+                                        <div className="cart-item-remove">
+                                            <button
+                                                onClick={() => removeFromCart(itemId)}
+                                                className="remove-btn"
+                                                title="Remove Item"
+                                            >
+                                                <IconTrash size={18} />
+                                            </button>
                                         </div>
                                     </div>
+                                );
+                            })}
+                        </div>
 
-                                    {/* <button onClick={() => removeItem(cartItem.id)}>Remove</button> */}
-                                    <hr />
-
-                                </div>
-                            )
-                        })
-
-                }
-                <p style={{ fontFamily: "serif", fontWeight: "bold", fontSize: "25px", textAlign: "right", paddingRight: "150px" }}>Total Amount: <span style={{ marginLeft: "10px" }}> &#8377;</span>
-                    {
-                        cart2.map(item => item.price * item.quantity).reduce((total, value) => total + value, 0)
-
-                    }
-                </p>
-
-                {/* <div style={{ paddingLeft: "10%" }}><br />
-                    <Link to="/signup"><button className='checkout' >CheckOut</button></Link>
-                </div> */}
-                
-            </div>
-            <div>
-                        <input className='input1' id="check01" type="checkbox" name="menu" />
-                        <label id='label' for="check01" className='chk'>Show Bill</label>
-                        <br /><br /><br /><br />
-                        <div class="submenu">
-                            {/* {
-                                submittedData && (
-                                    <div >
-                                        <h2>Submitted Data</h2>
-                                        <p>Name: {formData.name}</p>
-                                        
-                                    </div>
-                                )} */}
-                            <h1>Shopping Cart Bill</h1>
-                            <br/>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {cart2.map(item => (
-                                        <tr key={item.id}>
-                                            <td>{item.name}</td>
-                                            <td>{item.quantity}</td>
-                                            <td>&#8377;{item.price.toFixed(2)}</td>
-                                            <td>&#8377;{(item.quantity * item.price).toFixed(2)}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                                <tfoot>
-                                    <tr >
-                                        <td colSpan="3">Delivery Charge</td>
-                                        {
-                                            cart2.length === 0 ? (
-                                                <p style={{ fontSize: "30px" }}></p>
-                                            ) :
-                                                <td colSpan="3">
-                                                    Free Delivery
-                                                </td>
-                                        }
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="3">Total Amount</td>
-                                        <td>&#8377;{
-                                        cart2.map(item => item.price * item.quantity).reduce((total, value) => total + value ,0)}
-                                        </td>
-                                    </tr>
-                                    <br/><br/>
-                                     <tr>
-                                        <a href='http://localhost:3004'>
-                                        <button style={{marginLeft:"850px",backgroundColor:"mediumturquoise",width:"180px",borderRadius:"10px",fontWeight:"bold",fontSize:"35px",border:"none"}}>Checkout</button>
-                                        </a>
-                                    </tr> 
-                                </tfoot>
-                            </table>
-                            <br /><br /><br /><br />
+                        {/* Cart Actions Toolbar */}
+                        <div className="cart-actions-bar">
+                            <Link to="/product" className="btn-secondary-custom">
+                                ← Continue Shopping
+                            </Link>
+                            <button onClick={clearCart} className="btn-clear-cart">
+                                Clear Cart
+                            </button>
                         </div>
                     </div>
 
-            <br /><br /><br />
-        </>
-    )
+                    {/* Right: Order Summary & Coupon Box */}
+                    <div className="cart-summary-section">
+                        {/* Coupon Box */}
+                        <div className="cart-summary-card coupon-box">
+                            <h3 className="card-heading">
+                                <IconTag size={18} />
+                                <span>Have a Promo Coupon?</span>
+                            </h3>
 
-}
+                            {appliedCoupon ? (
+                                <div className="applied-coupon-pill">
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <IconCheck size={18} color="#10b981" />
+                                        <div>
+                                            <strong>{appliedCoupon.code}</strong> applied
+                                            <span style={{ display: 'block', fontSize: '0.78rem', color: '#10b981' }}>
+                                                You saved ₹{discountAmount}!
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button onClick={removeCoupon} className="remove-coupon-btn">
+                                        Remove
+                                    </button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleApplyCoupon} className="coupon-form">
+                                    <input
+                                        type="text"
+                                        placeholder="Enter coupon code (e.g. SAVE10)"
+                                        value={couponCodeInput}
+                                        onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
+                                    />
+                                    <button type="submit" disabled={couponLoading} className="btn-apply-coupon">
+                                        {couponLoading ? 'Applying...' : 'Apply'}
+                                    </button>
+                                </form>
+                            )}
+
+                            {/* Suggested Coupons Pills */}
+                            {!appliedCoupon && (
+                                <div className="suggested-coupons">
+                                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>
+                                        Available Offers (Click to apply):
+                                    </span>
+                                    <div className="coupon-tag-list">
+                                        {suggestedCoupons.map((c) => (
+                                            <button
+                                                key={c.code}
+                                                type="button"
+                                                onClick={() => {
+                                                    setCouponCodeInput(c.code);
+                                                    applyCoupon(c.code);
+                                                }}
+                                                className="coupon-tag-pill"
+                                            >
+                                                <strong>{c.code}</strong> - {c.desc}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Order Summary Bill Card */}
+                        <div className="cart-summary-card bill-summary-card">
+                            <h3 className="card-heading">Order Summary</h3>
+
+                            <div className="bill-row">
+                                <span>Items Subtotal</span>
+                                <span>₹{subtotal.toFixed(0)}</span>
+                            </div>
+
+                            {discountAmount > 0 && (
+                                <div className="bill-row discount-row">
+                                    <span>Coupon Discount ({appliedCoupon?.code})</span>
+                                    <span>- ₹{discountAmount}</span>
+                                </div>
+                            )}
+
+                            <div className="bill-row">
+                                <span>Delivery Fee</span>
+                                <span>
+                                    {deliveryFee === 0 ? (
+                                        <strong style={{ color: 'var(--success-color)' }}>FREE</strong>
+                                    ) : (
+                                        `₹${deliveryFee}`
+                                    )}
+                                </span>
+                            </div>
+
+                            {deliveryFee > 0 && (
+                                <p className="free-delivery-notice">
+                                    Add ₹{(199 - subtotal).toFixed(0)} more for <strong>FREE Delivery</strong>!
+                                </p>
+                            )}
+
+                            <div className="bill-row">
+                                <span>Taxes & GST (5%)</span>
+                                <span>₹{tax.toFixed(0)}</span>
+                            </div>
+
+                            <div className="bill-divider"></div>
+
+                            <div className="bill-row total-row">
+                                <span>Total Payable</span>
+                                <span className="total-amount">₹{total}</span>
+                            </div>
+
+                            <button
+                                onClick={() => navigate('/checkout')}
+                                className="btn-primary-custom proceed-checkout-btn"
+                            >
+                                <span>Proceed to Checkout</span>
+                                <span>→</span>
+                            </button>
+
+                            <div className="security-assurances">
+                                <span>🔒 100% Secure Checkout</span>
+                                <span>⚡ 30-Minute Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Cart;

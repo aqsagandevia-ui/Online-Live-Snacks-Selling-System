@@ -1,70 +1,285 @@
-# Getting Started with Create React App
+# 🍿 Crunchy Bite — Online Live Snacks Selling System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> **Modern, Responsive, Real-Time Online Food Ordering Platform**  
+> *Developed for MCA Academic Project, Viva Demonstration, and Portfolio Showcase.*
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📖 Table of Contents
+1. [Project Overview](#-project-overview)
+2. [Key Features](#-key-features)
+   - [Customer Features](#customer-features)
+   - [Admin Portal Features](#admin-portal-features)
+3. [Technology Stack](#-technology-stack)
+4. [System Architecture & Database Schema](#-system-architecture--database-schema)
+5. [Project Structure](#-project-structure)
+6. [Installation & Setup Guide](#-installation--setup-guide)
+7. [Default Demo Credentials](#-default-demo-credentials)
+8. [REST API Documentation](#-rest-api-documentation)
+9. [MCA Viva Presentation Guide & FAQ](#-mca-viva-presentation-guide--faq)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🌟 Project Overview
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Crunchy Bite** is a full-stack, responsive online food-ordering web application specialized in authentic Indian snacks, namkeens, freshly fried potato chips, spiced chaklis, and roasted corn snacks. 
 
-### `npm test`
+It solves the problem of traditional snack purchasing by providing real-time snack browsing, smart keyword search, category filtering, multi-step checkout with coupons, live order status tracking timeline, interactive admin inventory management with low-stock alerts, and sales analytics.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## ✨ Key Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 👤 Customer Features
+- **Modern Responsive UI**: Fully responsive across Mobile (360px–480px), Tablet (768px–1024px), and Desktop (1280px–1920px).
+- **Dark / Light Mode**: Theme toggle switch with local storage persistence.
+- **Smart Product Search**: Instant keyword search matching snack names, descriptions, categories, and ingredients with autocomplete suggestions.
+- **Advanced Filtering & Sorting**: Filter by category, price slider (₹10 - ₹250+), star ratings (4.5★+, 4★+), and stock availability; sort by popularity, price, rating, or newest.
+- **Product Details Modal**: High-res photos, ingredients list, preparation time, stock limiters, customer rating breakdown, and live review submission.
+- **Shopping Cart & Coupons**: Dynamic quantity stepper `[-] Qty [+]`, subtotal calculation, free delivery thresholds, and working promo coupons (`SAVE10`, `CRUNCHY20`, `SNACK50`).
+- **4-Step Checkout Wizard**:
+  1. *Delivery Address* (Choose saved address or add new with full validation)
+  2. *Order Review* (Itemized summary & savings calculation)
+  3. *Payment Method* (Cash on Delivery or Instant Online UPI/Card simulation)
+  4. *Order Confirmation* (Generated Order ID e.g. `CB-10024` with instant tracking button)
+- **Live Order Status Tracking**: Visual 6-stage timeline (`Placed` ➔ `Confirmed` ➔ `Preparing` ➔ `Ready` ➔ `Out for Delivery` ➔ `Delivered`) with polling for live status changes.
+- **Order History**: Filter orders by status (`All`, `In Progress`, `Delivered`, `Cancelled`) with quick cancellation for pending orders.
+- **User Profile & Address Book**: Manage personal details, phone, multiple delivery addresses, and change password.
+- **Saved Wishlist**: Add/remove favorites with 1-click move to cart.
+- **Non-blocking Toast Alerts**: Beautiful animated feedback for all cart, wishlist, and auth actions.
+- **Mobile Bottom Navigation**: Bottom app bar (`Home`, `Menu`, `Cart`, `Orders`, `Profile`) for native app-like mobile experience.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 👑 Admin Portal Features
+- **KPI Summary Cards**: Total Revenue, Total Orders, Active Snacks, Total Customers, Pending Orders, and Low Stock Alerts.
+- **Sales Analytics & Top Products**: Ranked list of top 5 best-selling snacks and category distribution.
+- **Product & Inventory Management**: Add, edit, delete snack products; set stock levels and low-stock thresholds; quick +/- stock adjustment buttons in table.
+- **Order Workflow Management**: View customer details and ordered items; update order status (`Pending` ➔ `Confirmed` ➔ `Preparing` ➔ `Ready` ➔ `Out for Delivery` ➔ `Delivered` / `Cancelled`) which updates the customer's live tracking timeline.
+- **Category Management**: Create and manage snack categories with dynamic product counts.
+- **Coupon System**: Create percentage or flat cash discount coupons, minimum order limits, max discount caps, and active/inactive toggles.
+- **Customer Directory**: View registered users, contact numbers, and saved addresses.
+- **1-Click Database Reset & Seeder**: Instant button to re-populate 34 authentic snack products with real photos, descriptions, and categories.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🛠 Technology Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Layer | Technologies Used |
+|---|---|
+| **Frontend** | React 18 (SPA), React Router v6, Context API (Auth, Cart, Theme, Toast), CSS3 Variables, Bootstrap 5 |
+| **Backend** | Node.js, Express.js RESTful API, CORS, Body-Parser, Multer |
+| **Authentication** | JWT (JSON Web Tokens), BCrypt.js password hashing |
+| **Database** | MongoDB with Mongoose ODM |
+| **Assets** | 59 Authentic Indian & Continental snack photos (`/photo/`) |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🏗 System Architecture & Database Schema
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+                      +-----------------------------+
+                      | React 18 Client Application |
+                      | (Port 3000 / Build Bundle)  |
+                      +--------------+--------------+
+                                     |
+                          REST API Requests (JSON)
+                                     |
+                      +--------------v--------------+
+                      |   Node.js / Express Server  |
+                      |   (Port 5000 / Unified API) |
+                      +--------------+--------------+
+                                     |
+                            Mongoose ODM
+                                     |
+                      +--------------v--------------+
+                      |      MongoDB Database       |
+                      |   (mongodb://localhost:27017)|
+                      +-----------------------------+
+```
 
-## Learn More
+### Core Mongoose Models:
+1. **User**: `name`, `email`, `password` (hashed), `phone`, `role` ('user'|'admin'), `addresses` (array of address sub-documents), `createdAt`.
+2. **Product**: `name`, `price`, `discountPrice`, `category`, `image`, `description`, `stock`, `lowStockThreshold`, `availability`, `ingredients`, `prepTime`, `rating`, `reviewCount`, `isFeatured`, `isSpecial`.
+3. **Category**: `name`, `slug`, `description`, `image`, `itemCount`, `isActive`.
+4. **Order**: `orderId` (e.g. `CB-10024`), `user`, `customerName`, `customerEmail`, `customerPhone`, `items` (array), `subtotal`, `discountAmount`, `couponCode`, `deliveryFee`, `tax`, `totalAmount`, `shippingAddress`, `paymentMethod`, `paymentStatus`, `orderStatus`, `statusTimeline` (array of { status, timestamp, note }).
+5. **Coupon**: `code`, `description`, `discountType` ('percent'|'flat'), `discountValue`, `minOrderValue`, `maxDiscount`, `expiryDate`, `usedCount`, `isActive`.
+6. **Review**: `product`, `user`, `userName`, `rating` (1-5), `comment`, `createdAt`.
+7. **Notification**: `recipient`, `title`, `message`, `type`, `isRead`, `link`, `createdAt`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📁 Project Structure
 
-### Code Splitting
+```
+Online Live Snacks Selling System/
+│
+├── home/                               # Main Application Root
+│   ├── public/
+│   │   ├── photo/                      # 59 Snack photos (Chips, Namkeen, Chakli, Corn)
+│   │   ├── index.html                  # HTML template with Google Fonts (Outfit & Poppins)
+│   │   └── favicon.ico
+│   │
+│   ├── server/                         # Express Backend Server
+│   │   ├── models/                     # Mongoose Schemas (User, Product, Order, Coupon, etc.)
+│   │   ├── routes/                     # API Routers (auth, products, orders, coupons, analytics)
+│   │   ├── seedData.js                 # 34 Authentic Snacks Seeder
+│   │   ├── app.js                      # Server Entrypoint (Port 5000)
+│   │   └── package.json
+│   │
+│   ├── src/                            # React 18 Frontend
+│   │   ├── Components/                 # UI Components
+│   │   │   ├── Navbar.jsx              # Responsive Navbar with search suggestions & cart badge
+│   │   │   ├── Hero.jsx                # Carousel, categories & bestselling showcase
+│   │   │   ├── SnackCard.jsx           # Product card with discount badge, ratings & stock alert
+│   │   │   ├── ProductDetailModal.jsx  # Modal with ingredients, reviews & quantity limiter
+│   │   │   ├── Product.jsx             # Smart search & filter catalog page
+│   │   │   ├── Cart.jsx                # Shopping cart & coupon application
+│   │   │   ├── Checkout.jsx            # 4-step checkout wizard & payment simulation
+│   │   │   ├── OrderTracking.jsx       # Visual live status timeline
+│   │   │   ├── MyOrders.jsx            # Order history with status tabs
+│   │   │   ├── UserProfile.jsx         # Profile & Address manager
+│   │   │   ├── Wishlist.jsx            # Saved items view
+│   │   │   ├── LoginSignup.jsx         # Unified auth with 1-click viva demo buttons
+│   │   │   ├── adminpage.jsx           # Admin Dashboard & Inventory Manager
+│   │   │   ├── MobileBottomNav.jsx     # Mobile app bottom navigation
+│   │   │   ├── Icons.jsx               # Shared SVG icons
+│   │   │   ├── Footer.js               # Footer
+│   │   │   ├── Aboutus.js              # About Us
+│   │   │   └── Contactus.js            # Contact Us
+│   │   │
+│   │   ├── context/                    # React Context State Providers
+│   │   │   ├── AuthContext.js          # Authentication & user state
+│   │   │   ├── CartContext.js          # Cart items, wishlist & coupon discounts
+│   │   │   ├── ThemeContext.js         # Light/Dark mode state
+│   │   │   └── ToastContext.js         # Animated toast feedback
+│   │   │
+│   │   ├── services/
+│   │   │   └── api.js                  # Axios client with interceptors & offline fallback
+│   │   │
+│   │   ├── styles/                     # CSS stylesheets & theme variables
+│   │   │   ├── theme.css               # Light/Dark variables & responsive utility classes
+│   │   │   ├── Navbar.css
+│   │   │   ├── Hero.css
+│   │   │   ├── Product.css
+│   │   │   ├── Cart.css
+│   │   │   ├── Checkout.css
+│   │   │   ├── Orders.css
+│   │   │   ├── Profile.css
+│   │   │   ├── Admin.css
+│   │   │   └── LoginSignup.css
+│   │   │
+│   │   ├── App.js                      # React Route hierarchy
+│   │   └── index.js                    # React Root
+│   │
+│   └── package.json
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🚀 Installation & Setup Guide
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [MongoDB](https://www.mongodb.com/try/download/community) installed and running locally on port `27017`
 
-### Making a Progressive Web App
+### Step 1: Start the Backend Server
+```bash
+# Navigate to the server folder
+cd "home/server"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Install backend dependencies
+npm install
 
-### Advanced Configuration
+# Start Express server on Port 5000 (auto-seeds database on first launch)
+node app.js
+```
+*Server will start at `http://localhost:5000` and automatically connect to MongoDB `mongodb://localhost:27017/productsdb`.*
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Step 2: Start the React Frontend
+```bash
+# Open a new terminal and navigate to the home folder
+cd "home"
 
-### Deployment
+# Install frontend dependencies (if not already done)
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# Start React development server
+npm start
+```
+*Frontend will open automatically at `http://localhost:3000`.*
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🔑 Default Demo Credentials
+
+For instant evaluation and viva demonstration, pre-configured accounts are provided with **1-Click Demo Login buttons** on the Sign-In page and top announcement bar:
+
+| Role | Email / Identifier | Password | Access / Capabilities |
+|---|---|---|---|
+| **Admin** | `admin@crunchybite.com` (or `aqsa`) | `admin123` (or `aqsa1234`) | Full Admin Dashboard, Sales Analytics, Inventory Editor, Order Status Workflow, Coupons |
+| **Customer** | `customer@crunchybite.com` | `user123` | Snack Browsing, Cart, Checkout, Order Tracking, Saved Addresses, Wishlist |
+
+### Active Promo Coupons (Ready to test in Cart):
+- `SAVE10`: **10% OFF** on orders above ₹199
+- `CRUNCHY20`: **20% OFF** on orders above ₹499
+- `SNACK50`: **Flat ₹50 OFF** on orders above ₹299
+- `WELCOME15`: **15% Welcome OFF** on orders above ₹150
+
+---
+
+## 📡 REST API Documentation
+
+### Authentication (`/api/auth`)
+- `POST /api/auth/register` — Register new user account.
+- `POST /api/auth/login` — Sign in and receive JWT token.
+- `GET /api/auth/me` — Get authenticated user details.
+- `PUT /api/auth/profile` — Update user profile.
+- `POST /api/auth/address` — Add delivery address.
+- `DELETE /api/auth/address/:id` — Delete delivery address.
+- `GET /api/auth/users` — Admin: List all registered customers.
+
+### Products (`/api/products`)
+- `GET /api/products` — Get products (Supports `?search=`, `?category=`, `?rating=`, `?inStock=`, `?sort=`).
+- `GET /api/products/:id` — Get single product details.
+- `POST /api/products` — Admin: Create new snack.
+- `PUT /api/products/:id` — Admin: Update product / adjust stock.
+- `DELETE /api/products/:id` — Admin: Delete product.
+- `POST /api/products/seed-now` — Admin: Trigger fresh 34-snack database seed.
+
+### Orders (`/api/orders`)
+- `POST /api/orders` — Place order (decrements stock, computes bill, generates Order ID).
+- `GET /api/orders/my-orders` — Get customer order history.
+- `GET /api/orders/:id` — Track live order status & timeline.
+- `GET /api/orders` — Admin: View all orders with status filter.
+- `PUT /api/orders/:id/status` — Admin: Update order status (`Pending` ➔ `Confirmed` ➔ `Preparing` ➔ `Ready` ➔ `Out for Delivery` ➔ `Delivered`).
+- `PUT /api/orders/:id/cancel` — Cancel order and restore stock.
+
+### Coupons & Analytics (`/api/coupons`, `/api/analytics`)
+- `POST /api/coupons/apply` — Validate code against cart subtotal.
+- `GET /api/coupons` — List active coupons.
+- `POST /api/coupons` — Admin: Create coupon.
+- `GET /api/analytics/dashboard` — Admin: KPIs, revenue, top 5 snacks, low-stock count.
+
+---
+
+## 🎓 MCA Viva Presentation Guide & FAQ
+
+### 1. What problem does this project solve?
+> Traditional snack shops and small farsan vendors rely on offline sales with no real-time inventory tracking, order status updates, or automated discounts. Crunchy Bite bridges this gap with a modern online food ordering system providing live order progress tracking, dynamic coupon discounts, stock alerts, and sales analytics.
+
+### 2. How is state managed in the frontend?
+> State is organized cleanly using **React 18 Context API**:
+> - `AuthContext`: Manages user credentials, JWT tokens, and address books with `localStorage` persistence.
+> - `CartContext`: Manages cart items, quantities, subtotal calculations, coupon savings, and wishlist.
+> - `ThemeContext`: Handles light/dark mode with CSS custom variables and attribute toggling.
+> - `ToastContext`: Provides non-blocking feedback popups.
+
+### 3. How is database concurrency and stock handled?
+> When an order is placed (`POST /api/orders`), the backend checks each item's available stock against the requested quantity. If available, stock is decremented atomically in MongoDB. If an order is cancelled, stock is restored automatically.
+
+### 4. How does the real-time tracking timeline work?
+> Each order document maintains a `statusTimeline` array storing every status transition with timestamps and notes. The customer tracking page (`/track/:orderId`) displays a visual progress bar and polls the server so when an admin updates the status in the Admin Portal, the customer sees the progress change live without manual refresh.
+
+---
+
+**Developed with ❤️ for MCA Project Examination & Demonstration.**
