@@ -1,7 +1,7 @@
 # 🍿 Crunchy Bite — Online Live Snacks Selling System
 
 > **Modern, Responsive, Real-Time Online Food Ordering Platform**  
-> *Developed for MCA Academic Project, Viva Demonstration, and Portfolio Showcase.*
+> *Developed by Aqsa*
 
 ---
 
